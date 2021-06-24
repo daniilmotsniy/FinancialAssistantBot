@@ -1,9 +1,9 @@
+from os import environ as env
 import requests
 from prettytable import PrettyTable
 
 from config import FINFUB_TOKEN
 
-# this token used for finhub API
 TOKEN = FINFUB_TOKEN
 
 
@@ -21,5 +21,4 @@ def get_stock_data(ticker_):
             table.add_row([c, r.json()['c']])
         except Exception as e:
             print(e)
-    # print(table)
     return table

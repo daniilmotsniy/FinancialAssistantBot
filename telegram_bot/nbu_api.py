@@ -1,5 +1,3 @@
-import json
-
 import requests
 from prettytable import PrettyTable
 
@@ -19,7 +17,6 @@ def get_fiat_data(cc_: list):
         for d in data:
             if d['cc'] in cc_:
                 table.add_row([d['txt'], round(d['rate'], 2)])
-        # print(table)
         return table
 
     except Exception as e:

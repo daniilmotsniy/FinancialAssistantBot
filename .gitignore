@@ -1,0 +1,18 @@
+# enviroments
+/venv/
+
+# cache
+__pycache__
+
+# local env files
+.env.local
+.env.*.local
+
+# editor directories and files
+.idea
+backend/migrations/
+backend/pycache/
+backend/test.sqlite3
+
+# bot config
+telegram_bot/config.py

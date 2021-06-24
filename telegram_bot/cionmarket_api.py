@@ -1,9 +1,7 @@
-from requests import Request, Session
+from requests import Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
-
 from prettytable import PrettyTable
-
 from config import COIN_MARKET_TOKEN
 
 crypto_url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
@@ -43,8 +41,6 @@ def get_crypto_data(symbol_: list):
                     icon = ' \U0001F7E2'
                 table.add_row([d['symbol'], round(d['quote']['USD']['price'], 2),
                                percent_change_24h + icon])
-
-        # print(table)
         return table
 
     except (ConnectionError, Timeout, TooManyRedirects) as e:
