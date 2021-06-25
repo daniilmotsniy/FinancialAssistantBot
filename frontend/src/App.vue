@@ -43,6 +43,7 @@ export default {
   methods: {
     tokenEvent: function (token) {
       this.user_id = token
+      this.getData(token)
     },
     addStock(i){
       this.user_stocks.push(i)
@@ -68,6 +69,17 @@ export default {
       this.user_cryptos = this.user_cryptos.filter(item => item !== i)
       this.updateData(this.user_id)
     },
+    getData(i){
+      fetch(API_URL + `/api/v1/users/` + i)
+      .then(response => response.json())
+      .then(json => {
+          this.user_name = json['user_name']
+          this.user_stocks = json['user_assets']['user_stocks'],
+          this.user_currencies = json['user_assets']['user_currencies'],
+          this.user_cryptos = json['user_assets']['user_cryptos'],
+          this.user_resources = json['user_assets']['user_resources']
+      })
+    },
     updateData(i){
       fetch(API_URL + `/api/v1/users/` + i, {
         method: 'PUT',
@@ -88,7 +100,7 @@ export default {
   },
   data(){
       return {
-          user_id: 'a14d2351d0d3280cc2989b769cb4ddc6646fda19e8c81b5a9f8bc7a75cab2f50',
+          user_id: '',
           user_name: '',
           user_stocks: [],
           user_currencies: [],
@@ -100,7 +112,6 @@ export default {
       fetch(API_URL + '/api/v1/users/' + this.user_id)
         .then(response => response.json())
         .then(json => {
-            console.log(json)
             this.user_name = json['user_name']
             this.user_stocks = json['user_assets']['user_stocks'],
             this.user_currencies = json['user_assets']['user_currencies'],

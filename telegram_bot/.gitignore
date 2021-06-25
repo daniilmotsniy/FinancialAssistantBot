@@ -1,0 +1,5 @@
+# cache
+__pycache__
+
+# bot config
+telegram_bot/config.py
