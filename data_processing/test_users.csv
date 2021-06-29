@@ -1,0 +1,4 @@
+user_id,user_name,user_assets
+a14d2351d0d3280cc2989b769cb4ddc6646fda19e8c81b5a9f8bc7a75cab2f50,Test,"{""user_stocks"": [""AAPL"", ""MSFT"", ""BA"", ""S""], ""user_currencies"": [""USD"", ""EUR""], ""user_cryptos"": [""BTC"", ""ETH"", ""XRP""], ""user_resources"": [""Oil""]}"
+7fb5617337df345344c6180e100e6fd24739c6b3ccb66fc1549d0cce3fb7a58a,Someone,"{""user_stocks"": [""AAPL"", ""Someone""], ""user_currencies"": [""USD"", ""EUR""], ""user_cryptos"": [""BTC"", ""ETH""], ""user_resources"": []}"
+262da036ffe7e4d51e239b5a12d7f21e4a77e99bd733a1543d64bcaf97f03bdd,Daniil,"{""user_stocks"": [""AAPL"", ""MSFT"", ""BA"", ""MCFE""], ""user_currencies"": [""USD"", ""EUR"", ""GBP""], ""user_cryptos"": [""BTC"", ""ETH"", ""XMR""], ""user_resources"": []}"
