@@ -4,3 +4,5 @@ __pycache__
 migrations/
 pycache/
 test.sqlite3
+
+/venv/

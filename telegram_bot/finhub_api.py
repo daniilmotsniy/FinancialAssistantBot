@@ -4,8 +4,6 @@ from prettytable import PrettyTable
 
 from config import FINFUB_TOKEN
 
-TOKEN = FINFUB_TOKEN
-
 
 def get_stock_data(ticker_):
     """
@@ -17,7 +15,7 @@ def get_stock_data(ticker_):
 
     for c in ticker_:
         try:
-            r = requests.get('https://finnhub.io/api/v1/quote?symbol=' + c + '&token=' + TOKEN)
+            r = requests.get('https://finnhub.io/api/v1/quote?symbol=' + c + '&token=' + FINFUB_TOKEN)
             table.add_row([c, r.json()['c']])
         except Exception as e:
             print(e)

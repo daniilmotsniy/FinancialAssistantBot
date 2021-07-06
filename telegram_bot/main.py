@@ -42,7 +42,7 @@ def get_token(message):
                 'user_resources': [],
             }
         })
-        r = requests.get(API_URL + 'api/v1/users/' + token).json()
+        r = requests.get(API_URL + '/api/v1/users/' + token).json()
         if not 'user_id' in r.keys():
             requests.post(API_URL + '/api/v1/users',  headers={"Content-Type": "application/json"}, data=data)
     except Exception as e:
@@ -57,7 +57,7 @@ def mess(message):
     get_message = message.text.strip().lower()
 
     # TODO fix 406 while user making requests without account
-    data = requests.get(API_URL + 'api/v1/users/'
+    data = requests.get(API_URL + '/api/v1/users/'
                         + str(sha256(str(message.chat.id).encode('utf-8')).hexdigest())).json()
 
     try:
