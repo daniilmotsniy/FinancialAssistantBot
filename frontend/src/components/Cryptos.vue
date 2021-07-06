@@ -5,20 +5,18 @@
         <table id="data">
             <tr>
                 <th>Crypto</th>
-                <th>Description</th>
                 <th>Delete</th>
             </tr>
             <tr v-for="i in user_cryptos" :key="i">
                 <td>{{ i }}</td>
-                <td>desc</td>
                 <td><a id="delete" v-on:click="$emit('remove-crypto', i)">Delete</a></td>
             </tr>
-            <tr>
-                <td>Add new</td>
-                <td><input v-model="ticker" placeholder="type crypto ticker here"></td>
-                <td><a id="add" v-on:click="$emit('add-crypto', ticker)">Add</a></td>
-            </tr>
         </table>
+        <br>
+        <div class="grid">
+          <input v-model="ticker" placeholder="type crypto ticker here">
+          <a id="add" v-on:click="$emit('add-crypto', ticker)">Add crypto</a>
+        </div>
         <br>
     </div>
 </template>
@@ -69,6 +67,10 @@
       font-size: 14px;
       margin: 2px 1px;
       cursor: pointer;
+  }
+
+  .grid {
+    display: inline-table;
   }
 
   input {

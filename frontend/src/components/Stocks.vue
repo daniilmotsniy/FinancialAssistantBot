@@ -5,20 +5,18 @@
         <table id="data">
             <tr>
                 <th>Stock</th>
-                <th>Description</th>
                 <th>Delete</th>
             </tr>
             <tr v-for="i in user_stocks" :key="i">
                 <td>{{ i }}</td>
-                <td>desc</td>
                 <td><a id="delete" v-on:click="$emit('remove-stock', i)">Delete</a></td>
             </tr>
-            <tr>
-                <td>Add new</td>
-                <td><input v-model="ticker" placeholder="type stock ticker here"></td>
-                <td><a id="add" v-on:click="$emit('add-stock', ticker)">Add</a></td>
-            </tr>
         </table>
+        <br>
+        <div class="grid">
+          <input v-model="ticker" placeholder="type stock ticker here">
+          <a id="add" v-on:click="$emit('add-stock', ticker)">Add stock</a>
+        </div>
         <br>
     </div>
 </template>
@@ -69,6 +67,10 @@
       font-size: 14px;
       margin: 2px 1px;
       cursor: pointer;
+  }
+
+  .grid {
+    display: inline-table;
   }
 
   input {
