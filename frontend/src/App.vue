@@ -2,10 +2,10 @@
   <div id="app">
     <img alt="Financial assistant logo" src="./assets/logo.png" height="200">
     <br>
-    <h2>Hi, {{this.user_name}}! Welocme to bot admin!</h2>
+    <h2>Welocme to bot admin {{this.user_name}}!</h2>
     <input v-model="token" v-on:change="tokenEvent(token)" placeholder="put your token here, please">
     <br>
-    <div v-if="this.user_id" >
+    <div v-if="this.user_name">
       <Cryptos
         v-bind:user_cryptos="user_cryptos"
         v-on:add-crypto="addCrypto"
@@ -21,6 +21,12 @@
         v-on:add-currencies="addCurrencie"
         v-on:remove-currencies="deleteCurrencie"
       />
+    </div>
+    <div v-else-if="this.user_name==''">
+    </div>
+    <div v-else>
+      <br>
+      <h3>Please enter correct token!</h3>
     </div>
   </div>
 </template>
@@ -69,15 +75,15 @@ export default {
       this.user_cryptos = this.user_cryptos.filter(item => item !== i)
       this.updateData(this.user_id)
     },
-    getData(i){
-      fetch(API_URL + `/api/v1/users/` + i)
+    getData(token){
+      fetch(API_URL + `/api/v1/users/` + token)
       .then(response => response.json())
       .then(json => {
-          this.user_name = json['user_name']
-          this.user_stocks = json['user_assets']['user_stocks'],
-          this.user_currencies = json['user_assets']['user_currencies'],
-          this.user_cryptos = json['user_assets']['user_cryptos'],
-          this.user_resources = json['user_assets']['user_resources']
+        this.user_name = json['user_name']
+        this.user_stocks = json['user_assets']['user_stocks'],
+        this.user_currencies = json['user_assets']['user_currencies'],
+        this.user_cryptos = json['user_assets']['user_cryptos'],
+        this.user_resources = json['user_assets']['user_resources']  
       })
     },
     updateData(i){
@@ -93,7 +99,6 @@ export default {
             "user_cryptos": this.user_cryptos,
             "user_resources": this.user_resources,
           }
-
         })
       })
     }
