@@ -37,4 +37,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 - refactor FE for better code style []
 - add .env vars []
 - validation for asset adding []
-- token validation []
+- token validation [x]
