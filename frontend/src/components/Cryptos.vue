@@ -41,6 +41,7 @@
   }
   a {
     color: #42b983;
+    border-radius: 8px;
   }
 
   #delete{
@@ -102,7 +103,7 @@
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #57a83c;
+    background-color: #d1a71d;
     color: white;
   }
 </style>

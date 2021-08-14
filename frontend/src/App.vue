@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Financial assistant logo" src="./assets/logo.png" height="200">
+    <img alt="Financial assistant logo" src="./assets/logo.png" height="250">
     <br>
     <h2>Welocme to bot admin {{this.user_name}}!</h2>
     <input v-model="token" v-on:change="tokenEvent(token)" placeholder="put your token here, please">
@@ -22,7 +22,7 @@
         v-on:remove-currencies="deleteCurrencie"
       />
     </div>
-    <div v-else-if="this.user_name==''">
+    <div v-else-if="this.user_name===''">
     </div>
     <div v-else>
       <br>
@@ -52,24 +52,30 @@ export default {
       this.getData(token)
     },
     addStock(i){
-      this.user_stocks.push(i)
-      this.updateData(this.user_id)
+      if (!this.user_stocks.includes(i)){
+        this.user_stocks.push(i)
+        this.updateData(this.user_id)
+      }
     },
     deleteStock(i){
       this.user_stocks = this.user_stocks.filter(item => item !== i)
       this.updateData(this.user_id)
     },
     addCurrencie(i){
-      this.user_currencies.push(i)
-      this.updateData(this.user_id)
+      if (!this.user_currencies.includes(i)){
+        this.user_currencies.push(i)
+        this.updateData(this.user_id)
+      }
     },
     deleteCurrencie(i){
       this.user_currencies = this.user_currencies.filter(item => item !== i)
       this.updateData(this.user_id)
     },
     addCrypto(i){
-      this.user_cryptos.push(i)
-      this.updateData(this.user_id)
+      if (!this.user_cryptos.includes(i)){
+        this.user_cryptos.push(i)
+        this.updateData(this.user_id)
+      }
     },
     deleteCrypto(i){
       this.user_cryptos = this.user_cryptos.filter(item => item !== i)
@@ -80,10 +86,10 @@ export default {
       .then(response => response.json())
       .then(json => {
         this.user_name = json['user_name']
-        this.user_stocks = json['user_assets']['user_stocks'],
-        this.user_currencies = json['user_assets']['user_currencies'],
-        this.user_cryptos = json['user_assets']['user_cryptos'],
-        this.user_resources = json['user_assets']['user_resources']  
+        this.user_stocks = json['user_assets']['user_stocks']
+        this.user_currencies = json['user_assets']['user_currencies']
+        this.user_cryptos = json['user_assets']['user_cryptos']
+        this.user_resources = json['user_assets']['user_resources']
       })
     },
     updateData(i){
@@ -118,9 +124,9 @@ export default {
         .then(response => response.json())
         .then(json => {
             this.user_name = json['user_name']
-            this.user_stocks = json['user_assets']['user_stocks'],
-            this.user_currencies = json['user_assets']['user_currencies'],
-            this.user_cryptos = json['user_assets']['user_cryptos'],
+            this.user_stocks = json['user_assets']['user_stocks']
+            this.user_currencies = json['user_assets']['user_currencies']
+            this.user_cryptos = json['user_assets']['user_cryptos']
             this.user_resources = json['user_assets']['user_resources']
         })
   }

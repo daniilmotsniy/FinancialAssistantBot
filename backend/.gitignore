@@ -6,3 +6,4 @@ pycache/
 test.sqlite3
 
 /venv/
+/data/

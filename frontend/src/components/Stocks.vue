@@ -41,6 +41,7 @@
   }
   a {
     color: #42b983;
+    border-radius: 8px;
   }
 
   #delete{
