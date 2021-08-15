@@ -15,4 +15,10 @@ pip install -r requirements.txt
 python csv_handler.py
 ```
 
+## Helpers
+### Dump creating
 
+Run this SQL from Postgres
+
+`COPY users TO '<path>\test_users.csv' DELIMITER ',' CSV HEADER;
+`
