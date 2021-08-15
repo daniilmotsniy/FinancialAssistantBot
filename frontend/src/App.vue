@@ -22,7 +22,7 @@
         v-on:remove-currencies="deleteCurrencie"
       />
     </div>
-    <div v-else-if="this.user_name===''">
+    <div v-else-if="this.user_name===null">
     </div>
     <div v-else>
       <br>
@@ -111,8 +111,8 @@ export default {
   },
   data(){
       return {
-          user_id: '',
-          user_name: '',
+          user_id: null,
+          user_name: null,
           user_stocks: [],
           user_currencies: [],
           user_cryptos: [],

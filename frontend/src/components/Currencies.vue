@@ -18,8 +18,8 @@
         <div class="grid">
           <Autocomplete
               :search="search"
-              placeholder="Search for a stock"
-              aria-label="Search for a stock"
+              placeholder="Search for a currencie"
+              aria-label="Search for a currencie"
               @submit="onSubmit"
           ></Autocomplete>
         </div>
@@ -46,6 +46,7 @@ export default ({
       })
     },
     onSubmit(result){
+      //TODO clear value
       this.$emit('add-currencies', Object.keys(this.currencieDict).find(key => this.currencieDict[key] === result))
     }
   },
