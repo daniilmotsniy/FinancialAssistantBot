@@ -5,25 +5,56 @@
         <table id="data">
             <tr>
                 <th>Crypto</th>
+                <th>Ticker</th>
                 <th>Delete</th>
             </tr>
             <tr v-for="i in user_cryptos" :key="i">
+                <td>{{ cryptoDict[i] }}</td>
                 <td>{{ i }}</td>
                 <td><a id="delete" v-on:click="$emit('remove-crypto', i)">Delete</a></td>
             </tr>
         </table>
         <br>
         <div class="grid">
-          <input v-model="ticker" placeholder="type crypto ticker here">
-          <a id="add" v-on:click="$emit('add-crypto', ticker)">Add crypto</a>
+          <Autocomplete
+              :search="search"
+              placeholder="Search for a crypto"
+              aria-label="Search for a crypto"
+              @submit="onSubmit"
+          ></Autocomplete>
         </div>
         <br>
     </div>
 </template>
 
 <script>
+  import Autocomplete from "@trevoreyre/autocomplete-vue"
+
   export default ({
-      props: ['user_cryptos']
+      props: ['user_cryptos'],
+      components: {
+        Autocomplete
+      },
+      methods: {
+        search(input) {
+          if (input.length < 1) {
+            return []
+          }
+          return Object.values(this.cryptoDict).filter(cryptoTicker => {
+            return cryptoTicker
+                .toLowerCase()
+                .startsWith(input.toLowerCase())
+          })
+        },
+        onSubmit(result){
+          this.$emit('add-crypto', Object.keys(this.cryptoDict).find(key => this.cryptoDict[key] === result))
+        }
+      },
+      data(){
+        return {
+          cryptoDict: require('../xwalk/crypto_dict.json')
+        }
+      },
   })
 </script>
 
