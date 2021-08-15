@@ -5,25 +5,55 @@
         <table id="data">
             <tr>
                 <th>Stock</th>
+                <th>Ticker</th>
                 <th>Delete</th>
             </tr>
             <tr v-for="i in user_stocks" :key="i">
+                <td>{{ stockDict[i] }}</td>
                 <td>{{ i }}</td>
                 <td><a id="delete" v-on:click="$emit('remove-stock', i)">Delete</a></td>
             </tr>
         </table>
         <br>
         <div class="grid">
-          <input v-model="ticker" placeholder="type stock ticker here">
-          <a id="add" v-on:click="$emit('add-stock', ticker)">Add stock</a>
+          <Autocomplete
+              :search="search"
+              placeholder="Search for a stock"
+              aria-label="Search for a stock"
+              @submit="onSubmit"
+          ></Autocomplete>
         </div>
         <br>
     </div>
 </template>
 
 <script>
+  import Autocomplete from "@trevoreyre/autocomplete-vue"
   export default ({
-      props: ['user_stocks']
+    props: ['user_stocks'],
+    components: {
+      Autocomplete
+    },
+    methods: {
+      search(input) {
+        if (input.length < 1) {
+          return []
+        }
+        return Object.values(this.stockDict).filter(stockTicker => {
+          return stockTicker
+              .toLowerCase()
+              .startsWith(input.toLowerCase())
+        })
+      },
+      onSubmit(result){
+        this.$emit('add-stock', Object.keys(this.stockDict).find(key => this.stockDict[key] === result))
+      }
+    },
+    data(){
+      return {
+        stockDict: require('../crosswalk/stocks_dict.json')
+      }
+    },
   })
 </script>
 

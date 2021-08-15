@@ -5,26 +5,56 @@
         <table id="data">
             <tr>
                 <th>Currencie</th>
+                <th>Ticker</th>
                 <th>Delete</th>
             </tr>
             <tr v-for="i in user_currencies" :key="i">
+              <td>{{ currencieDict[i] }}</td>
                 <td>{{ i }}</td>
                 <td><a id="delete" v-on:click="$emit('remove-currencies', i)">Delete</a></td>
             </tr>
         </table>
         <br>
         <div class="grid">
-          <input v-model="ticker" placeholder="type currencie ticker here">
-          <a id="add" v-on:click="$emit('add-currencies', ticker)">Add currencie</a>
+          <Autocomplete
+              :search="search"
+              placeholder="Search for a stock"
+              aria-label="Search for a stock"
+              @submit="onSubmit"
+          ></Autocomplete>
         </div>
         <br>
     </div>
 </template>
 
 <script>
-  export default ({
-      props: ['user_currencies']
-  })
+import Autocomplete from "@trevoreyre/autocomplete-vue"
+export default ({
+  props: ['user_currencies'],
+  components: {
+    Autocomplete
+  },
+  methods: {
+    search(input) {
+      if (input.length < 1) {
+        return []
+      }
+      return Object.values(this.currencieDict).filter(stockTicker => {
+        return stockTicker
+            .toLowerCase()
+            .startsWith(input.toLowerCase())
+      })
+    },
+    onSubmit(result){
+      this.$emit('add-currencies', Object.keys(this.currencieDict).find(key => this.currencieDict[key] === result))
+    }
+  },
+  data(){
+    return {
+      currencieDict: require('../crosswalk/fiat_dict.json')
+    }
+  },
+})
 </script>
 
 <style scoped>

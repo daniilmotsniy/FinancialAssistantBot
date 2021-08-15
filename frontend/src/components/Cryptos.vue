@@ -52,7 +52,7 @@
       },
       data(){
         return {
-          cryptoDict: require('../xwalk/crypto_dict.json')
+          cryptoDict: require('../crosswalk/crypto_dict.json')
         }
       },
   })
