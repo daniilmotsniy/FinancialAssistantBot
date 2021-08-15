@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Financial assistant logo" src="./assets/logo.png" height="250">
+    <img alt="Financial assistant logo" src="./assets/logo.png" height="200">
     <br>
     <h2>Welocme to bot admin {{this.user_name}}!</h2>
     <input v-model="token" v-on:change="tokenEvent(token)" placeholder="put your token here, please">
