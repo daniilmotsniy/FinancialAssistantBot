@@ -10,6 +10,7 @@ app = FastAPI()
 
 FILE_PATH = 'test_users.csv'
 
+
 class AssetsCount(ObjectType):
     user_stocks = Int()
     user_currencies = Int()
