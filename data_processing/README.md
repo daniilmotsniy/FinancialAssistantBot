@@ -10,9 +10,9 @@ Create virtual environment and then install requirements
 pip install -r requirements.txt
 ```
 
-### Run csv handler
+## Run server
 ```
-python csv_handler.py
+uvicorn web.server:app --reload
 ```
 
 ## Helpers
