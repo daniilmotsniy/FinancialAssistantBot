@@ -12,7 +12,7 @@ pip install -r requirements.txt
 
 ## Run server
 ```
-uvicorn web.server:app --reload
+uvicorn server:app --reload
 ```
 
 ## Helpers

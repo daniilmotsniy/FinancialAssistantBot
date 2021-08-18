@@ -4,7 +4,7 @@ from starlette.graphql import GraphQLApp
 
 from entities.assets_analytics import AssetsAnalytics
 from helpers.constants import DB_BACKUP_CSV_PATH
-from web.graphql import AssetsCount
+from web.graphql import AssetsCount, Asset
 
 app = FastAPI()
 
@@ -14,10 +14,13 @@ assets_analytics = AssetsAnalytics(DB_BACKUP_CSV_PATH)
 class Query(ObjectType):
     hello = String(name=String(default_value="stranger"))
     assets_count = Field(AssetsCount)
+    stocks_count = Field(Asset)
 
     def resolve_assets_count(self, info):
-        total_count = assets_analytics.assets_total_count()
-        return total_count
+        return assets_analytics.assets_total_count()
+
+    def resolve_stocks_count(self, info):
+        return assets_analytics.stocks_total_count()
 
     def resolve_hello(self, info, name):
         return "Hello " + name
