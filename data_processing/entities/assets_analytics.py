@@ -27,7 +27,7 @@ class AssetsAnalytics(AnalyticsBase):
     def asset_total_count(self, asset: str) -> List[Dict[str, Any]]:
         """
         asset [str]: it could be 'user_stocks'
-        allows to get count per different stocks from users
+        allows to get count per different asset from users
         """
         total = self.df[asset].explode().value_counts().rename_axis('label').reset_index(name='count')
         return [{'label': v['label'], 'count': v['count']}
