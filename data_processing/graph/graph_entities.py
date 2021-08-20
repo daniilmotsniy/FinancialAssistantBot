@@ -1,4 +1,4 @@
-from graphene import ObjectType, Int, String, Field
+from graphene import ObjectType, Int, String
 
 
 class AssetsCount(ObjectType):
@@ -8,10 +8,6 @@ class AssetsCount(ObjectType):
     user_resources = Int()
 
 
-class KeyValue(ObjectType):
+class LabelCount(ObjectType):
     label = String()
-    value = Int()
-
-
-class Asset(ObjectType):
-    item = Field(KeyValue)
+    count = Int()
