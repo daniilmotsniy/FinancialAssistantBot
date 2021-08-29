@@ -1,12 +1,23 @@
 from fastapi import FastAPI
 from graphene import ObjectType, Schema, String, Field, List
 from starlette.graphql import GraphQLApp
+from starlette.middleware.cors import CORSMiddleware
 
 from entities.assets_analytics import AssetsAnalytics
 from helpers.constants import DB_BACKUP_CSV_PATH
 from graph.graph_entities import AssetsCount, LabelCount
 
 app = FastAPI()
+
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 assets_analytics = AssetsAnalytics(DB_BACKUP_CSV_PATH)
 
