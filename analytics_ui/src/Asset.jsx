@@ -2,7 +2,7 @@ import React from 'react'
 import {Bar} from 'react-chartjs-2';
 import {gql, useQuery} from "@apollo/client";
 
-const USER_CURRENCIES = gql`
+const ASSET_COUNT = gql`
   query AssetCount($asset: String!) {
     assetCount(asset: $asset) {
       label
@@ -12,7 +12,7 @@ const USER_CURRENCIES = gql`
 `;
 
 function Asset({asset, color}) {
-    const { loading, error, data } = useQuery(USER_CURRENCIES,{
+    const { loading, error, data } = useQuery(ASSET_COUNT,{
         variables: {asset: asset},
     })
     if (loading) return <p>Loading...</p>
