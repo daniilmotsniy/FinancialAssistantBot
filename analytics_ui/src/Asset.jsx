@@ -15,8 +15,8 @@ function Asset({asset, color}) {
     const { loading, error, data } = useQuery(USER_CURRENCIES,{
         variables: {asset: asset},
     })
-    if (loading) return `Loading...`
-    if (error) return `${error}`
+    if (loading) return <p>Loading...</p>
+    if (error) return <p>${error}</p>
 
     let new_label = asset.split('_')[1]
     new_label = new_label[0].toUpperCase() + new_label.slice(1)
