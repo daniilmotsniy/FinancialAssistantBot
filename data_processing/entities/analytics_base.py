@@ -16,7 +16,7 @@ class AnalyticsBase(object):
         dataframe.plot()
         plt.show()
 
-    def _cleanup_dataframe(self):
+    def _cleanup_dataframe_from_csv(self):
         df = pd.read_csv(self._csv_path, dtype=object, delimiter='|', index_col='id')
         for index, row in df.iterrows():
             row['user_stocks'] = str(row['user_stocks']).split(',')

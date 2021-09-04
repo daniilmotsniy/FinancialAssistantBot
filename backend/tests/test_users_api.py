@@ -9,7 +9,7 @@ class TestUserApi(TestUsersBase):
     """
     test_user = json.dumps(
         {
-            "user_id": "12345678",
+            "user_id": "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f",
             "user_name": "Test",
             "user_assets": {
                 "user_stocks": ["AAPL"],
@@ -32,6 +32,7 @@ class TestUserApi(TestUsersBase):
         """
         self.client.post('/api/v1/users', headers={"Content-Type": "application/json"}, data=self.test_user)
         request = self.client.get('/api/v1/users/ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f')
+        d = json.loads(request.data)
         self.assertEqual(200, request.status_code)
 
     def test_post_user(self):

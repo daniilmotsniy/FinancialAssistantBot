@@ -1,0 +1,5 @@
+{
+  "test_users_api.py": true,
+  "test_users_api.py::TestUserApi::test_get_user": true,
+  "test_users_api.py::TestUserApi::test_get_users": true
+}

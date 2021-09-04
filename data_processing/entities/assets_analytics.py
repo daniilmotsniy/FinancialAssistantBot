@@ -8,7 +8,7 @@ class AssetsAnalytics(AnalyticsBase):
     def __init__(self, csv_path: str):
         super().__init__(csv_path)
         # main dataframe from csv
-        self.df = self._cleanup_dataframe()
+        self.df = self._cleanup_dataframe_from_csv()
 
     def assets_total_count(self) -> dict:
         """
