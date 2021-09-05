@@ -31,17 +31,17 @@ def start(message):
 @bot.message_handler(commands=["get_token"])
 def get_token(message):
     token = sha256(str(message.chat.id).encode('utf-8')).hexdigest()
+    data = json.dumps({
+        'user_id': token,
+        'user_name': message.from_user.first_name,
+        'user_assets': {
+            'user_stocks': ["AAPL", "MSFT"],
+            'user_cryptos': ["BTC", "ETH"],
+            'user_currencies': ["USD", "EUR"],
+            'user_resources': [],
+        }
+    })
     try:
-        data = json.dumps({
-            'user_id': token,
-            'user_name': message.from_user.first_name,
-            'user_assets': {
-                'user_stocks': ["AAPL", "MSFT"],
-                'user_cryptos': ["BTC", "ETH"],
-                'user_currencies': ["USD", "EUR"],
-                'user_resources': [],
-            }
-        })
         r = requests.get(API_URL + '/api/v1/users/' + token).json()
         if not 'user_id' in r.keys():
             requests.post(API_URL + '/api/v1/users',  headers={"Content-Type": "application/json"}, data=data)

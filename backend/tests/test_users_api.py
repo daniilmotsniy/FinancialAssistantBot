@@ -19,11 +19,26 @@ class TestUserApi(TestUsersBase):
             }
         })
 
+    test_user2 = json.dumps(
+        {
+            "user_id": "af797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a8982463g",
+            "user_name": "Test2",
+            "user_assets": {
+                "user_stocks": ["BMW"],
+                "user_currencies": ["EUR"],
+                "user_cryptos": ["BTC", "ETH"],
+                "user_resources": ["Oil"],
+            }
+        })
+
     def test_get_users(self):
         """
         checks whether the get request to api works well
         """
+        self.client.post('/api/v1/users', headers={"Content-Type": "application/json"}, data=self.test_user)
+        self.client.post('/api/v1/users', headers={"Content-Type": "application/json"}, data=self.test_user2)
         request = self.client.get('/api/v1/users')
+        assert len(json.loads(request.data)) == 2
         self.assertEqual(200, request.status_code)
 
     def test_get_user(self):
@@ -32,7 +47,6 @@ class TestUserApi(TestUsersBase):
         """
         self.client.post('/api/v1/users', headers={"Content-Type": "application/json"}, data=self.test_user)
         request = self.client.get('/api/v1/users/ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f')
-        d = json.loads(request.data)
         self.assertEqual(200, request.status_code)
 
     def test_post_user(self):

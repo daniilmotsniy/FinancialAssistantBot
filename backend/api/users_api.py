@@ -1,5 +1,3 @@
-from hashlib import sha256
-
 from flask import jsonify, abort
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
@@ -37,9 +35,7 @@ class UsersApiParam(Resource):
     @staticmethod
     def get(user_id):
         """
-        get the record of the users by user_id
-        :param user_id: id of user
-        :return: json of user
+        get the user record
         """
         user = User.query.filter_by(user_id=user_id).first()
 
@@ -59,15 +55,11 @@ class UsersApiParam(Resource):
     @staticmethod
     def put(user_id):
         """
-        update the record of the user by user_id
-        :param user_id: id of  user
-        :return: json of user
+        update the record of user assets
+        :return: response message
         """
-        user = User.query.filter_by(user_id=user_id).first()
-
-        # TODO update with assets
-
-        if user:
+        old_assets = Assets.query.filter_by(user_id=user_id).first()
+        if old_assets:
             session = db.session
             json_data = request.json
             try:
@@ -76,12 +68,14 @@ class UsersApiParam(Resource):
                 return {'Message': error.messages}, 406
 
             try:
-                user.user_assets = request_data['user_assets']
+                old_assets.user_stocks = request_data['user_assets']['user_stocks']
+                old_assets.user_currencies = request_data['user_assets']['user_currencies']
+                old_assets.user_cryptos = request_data['user_assets']['user_cryptos']
+                old_assets.user_resources = request_data['user_assets']['user_resources']
                 session.commit()
                 return {"User was updated with id": user_id}, 204
-            except Exception as e:
+            except Exception:
                 session.rollback()
-                print(e)
                 return {'Message': 'Internal error occurred'}, 500
             finally:
                 session.close()
@@ -91,8 +85,7 @@ class UsersApiParam(Resource):
     @staticmethod
     def delete(user_id):
         """
-        delete the record of the user
-        :param user_id: id of the user
+        delete user record
         :return: id of deleted user
         """
         session = db.session
@@ -113,23 +106,25 @@ class UsersApi(Resource):
     @staticmethod
     def get():
         """
-        get all records from the table
-        :return: json of all records
+        get all user records
         """
         users = User.query.all()
         user_with_assets = []
-        # TODO get users with assets
+        # FIXME assets_dict replace user_cryptos and user_currencies
         for user in users:
+            user_dict = user.to_dict()
+            assets_dict = [asset.to_dict() for asset in user.user_assets][0]
             user_with_assets.append({
-                    'user': user.to_dict(),
-                    'assets': [asset.to_dict() for asset in user.assets]
-                })
+                'user_id': user_dict['user_id'],
+                'user_name': user_dict['user_name'],
+                'user_assets': assets_dict
+            })
         return user_with_assets, 200
 
     @staticmethod
     def post():
         """
-        add new user to the table
+        add new user
         :return: id of created user
         """
         session = db.session
@@ -151,10 +146,8 @@ class UsersApi(Resource):
             session.commit()
             return {"New user was added with id": new_user.user_id}, 201
         except IntegrityError as e:
-            print(e)
             return {'Message': e}, 406
         except AttributeError as e:
-            print(e)
             return {'Message': e}, 406
         except Exception as e:
             return {'Message': e}, 500
