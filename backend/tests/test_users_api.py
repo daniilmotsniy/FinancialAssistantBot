@@ -1,9 +1,9 @@
 import json
 
-from test_base_api import TestUsersBase
+from test_base_api import TestAPIBase
 
 
-class TestUserApi(TestUsersBase):
+class TestUserApi(TestAPIBase):
     """
     class for users api test cases
     """
@@ -64,7 +64,7 @@ class TestUserApi(TestUsersBase):
         data_to_update = json.dumps(
             {
                 "user_assets": {
-                    "user_stocks": ["AAPL"],
+                    "user_stocks": ["AAPL", "MCFE"],
                     "user_currencies": ["USD", "EUR"],
                     "user_cryptos": ["BTC", "ETH", "XRP"],
                     "user_resources": ["Oil"],
@@ -72,6 +72,8 @@ class TestUserApi(TestUsersBase):
             })
         request = self.client.put('/api/v1/users/ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f',
                                   headers={"Content-Type": "application/json"}, data=data_to_update)
+        new_user = self.client.get('/api/v1/users/ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f')
+        assert json.loads(new_user.data)['user_assets']['user_stocks'] == ["AAPL", "MCFE"]
         self.assertEqual(204, request.status_code)
 
     def test_delete_user(self):

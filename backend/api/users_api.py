@@ -110,7 +110,6 @@ class UsersApi(Resource):
         """
         users = User.query.all()
         user_with_assets = []
-        # FIXME assets_dict replace user_cryptos and user_currencies
         for user in users:
             user_dict = user.to_dict()
             assets_dict = [asset.to_dict() for asset in user.user_assets][0]
@@ -138,8 +137,8 @@ class UsersApi(Resource):
                             request_data['user_name'])
             new_assets = Assets(request_data['user_id'],
                                 request_data['user_assets']['user_stocks'],
-                                request_data['user_assets']['user_cryptos'],
                                 request_data['user_assets']['user_currencies'],
+                                request_data['user_assets']['user_cryptos'],
                                 request_data['user_assets']['user_resources'],)
             session.add(new_user)
             session.add(new_assets)

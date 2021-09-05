@@ -5,7 +5,7 @@ from backend.config import TestConfiguration
 from backend.db import db
 
 
-class TestUsersBase(unittest.TestCase):
+class TestAPIBase(unittest.TestCase):
     def setUp(self):
         self.test_app = app
         self.test_app.config.from_object(TestConfiguration)
