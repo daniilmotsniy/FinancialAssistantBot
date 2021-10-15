@@ -3,7 +3,7 @@ from graphene import ObjectType, Schema, String, Field, List
 from starlette.graphql import GraphQLApp
 from starlette.middleware.cors import CORSMiddleware
 
-from entities.assets_analytics import AssetsAnalytics
+from bin.assets_analytics import AssetsAnalytics
 from helpers.constants import DB_BACKUP_CSV_PATH
 from graph.graph_entities import AssetsCount, LabelCount
 

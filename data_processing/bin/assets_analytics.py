@@ -15,7 +15,8 @@ class AssetsAnalytics(AnalyticsBase):
         allows to get count of total assets in users
         """
         result = defaultdict(lambda: 0)
-
+        assets = self._read_from_db()
+        # TODO change data from csv to data from db
         for index, row in self.df.iterrows():
             result['user_stocks'] += len(row['user_stocks'])
             result['user_cryptos'] += len(row['user_cryptos'])

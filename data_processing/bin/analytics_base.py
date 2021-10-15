@@ -1,6 +1,12 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
+import sys
+sys.path.append("..")
+
+from data_processing.gateways import postgres
+from data_processing.entity import asset
+
 
 class AnalyticsBase(object):
     def __init__(self, csv_path: str):
@@ -24,3 +30,6 @@ class AnalyticsBase(object):
             row['user_currencies'] = str(row['user_currencies']).split(',')
             row['user_resources'] = str(row['user_resources']).split(',')
         return df
+
+    def _read_from_db(self):
+        return postgres.Postgres().session().query(asset.Asset).all()
