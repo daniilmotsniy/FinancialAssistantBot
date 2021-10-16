@@ -1,3 +1,5 @@
+from datetime import date
+
 from flask import jsonify, abort
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
@@ -48,6 +50,7 @@ class UsersApiParam(Resource):
         user_with_assets = {
             'user_id': user_dict['user_id'],
             'user_name': user_dict['user_name'],
+            'registration_date': str(user_dict['registration_date']),
             'user_assets': assets_dict
         }
         return jsonify(user_with_assets)
@@ -116,6 +119,7 @@ class UsersApi(Resource):
             user_with_assets.append({
                 'user_id': user_dict['user_id'],
                 'user_name': user_dict['user_name'],
+                'registration_date': str(user_dict['registration_date']),
                 'user_assets': assets_dict
             })
         return user_with_assets, 200
@@ -134,7 +138,7 @@ class UsersApi(Resource):
             except ValidationError as error:
                 return {'Message': error.messages}, 406
             new_user = User(request_data['user_id'],
-                            request_data['user_name'])
+                            request_data['user_name'], date.today())
             new_assets = Assets(request_data['user_id'],
                                 request_data['user_assets']['user_stocks'],
                                 request_data['user_assets']['user_currencies'],
