@@ -36,7 +36,6 @@ class UsersApiParam(Resource):
             abort(406, 'This record is absent in database')
 
         user_assets = Asset.query.filter_by(user_id=user_id).all()
-
         user_dict = user.to_dict()
         user_dict['user_assets'] = [asset.to_dict() for asset in user_assets]
         return jsonify(user_dict)
@@ -70,7 +69,7 @@ class UsersApiParam(Resource):
                 for ticker in asset_tickers:
                     if ticker not in old_assets_tickers:
                         new_asset = Asset(user_id,
-                                          int(asset_type_id),
+                                          asset_type_id,
                                           ticker)
                         session.add(new_asset)
             session.commit()
@@ -110,6 +109,7 @@ class UsersApi(Resource):
         """
         users = User.query.all()
         user_with_assets = []
+
         for user in users:
             user_assets = Asset.query.filter_by(user_id=user.user_id).all()
             user_dict = user.to_dict()

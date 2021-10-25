@@ -8,7 +8,7 @@ class Asset(db.Model):
     asset_id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(String, ForeignKey("users.user_id", ondelete='CASCADE'))
     ticker = Column(String, nullable=False)
-    type_id = Column(Integer)
+    type_id = Column(String)
 
     def __init__(self, user_id, type_id, ticker):
         self.user_id = user_id
@@ -18,7 +18,6 @@ class Asset(db.Model):
     def to_dict(self):
         return {
             'asset_id': self.asset_id,
-            'user_id': self.user_id,
             'type_id': self.type_id,
             'ticker': self.ticker,
         }
