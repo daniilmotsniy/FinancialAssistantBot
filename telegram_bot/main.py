@@ -44,11 +44,11 @@ def get_token(message):
     try:
         r = requests.get(API_URL + '/api/v1/users/' + token).json()
         if not 'user_id' in r.keys():
-            requests.post(API_URL + '/api/v1/users',  headers={"Content-Type": "application/json"}, data=data)
+            requests.post(API_URL + '/api/v1/users', headers={"Content-Type": "application/json"}, data=data)
     except Exception as e:
         print(e)
     text = f"Your token is bellow, please don't give it anyone if you want to control your assets by your own." \
-           f"\n \n { token }"
+           f"\n \n {token}"
     bot.send_message(message.chat.id, text, parse_mode='html')
 
 
@@ -59,22 +59,27 @@ def mess(message):
     # TODO fix 406 while user making requests without account
     data = requests.get(API_URL + '/api/v1/users/'
                         + str(sha256(str(message.chat.id).encode('utf-8')).hexdigest())).json()
-
     try:
-        currencies = data['user_assets']['user_currencies']
-        crypto = data['user_assets']['user_cryptos']
-        stocks = data['user_assets']['user_stocks']
-    except KeyError:
-        currencies = ['USD', 'EUR']
-        crypto = ['BTC', 'ETH']
-        stocks = ['AAPL', 'MSFT']
+        currencies = list(filter(lambda asset: asset['type_id'] == 'user_currencies',
+                                 data['user_assets']))
+        currencies_tickers = [currency['ticker'] for currency in currencies]
+        cryptos = list(filter(lambda asset: asset['type_id'] == 'user_cryptos',
+                              data['user_crypto']))
+        crypto_tickers = [crypto['ticker'] for crypto in cryptos]
+        stocks = list(filter(lambda asset: asset['type_id'] == 'user_stocks',
+                             data['user_assets']))
+        stocks_tickers = [stock['ticker'] for stock in stocks]
+    except Exception:
+        currencies_tickers = ['USD', 'EUR']
+        crypto_tickers = ['BTC', 'ETH']
+        stocks_tickers = ['AAPL', 'MSFT']
 
     if get_message == "currencies":
-        bot.send_message(message.chat.id, f'<pre>{get_fiat_data(currencies)}</pre>', parse_mode='html')
+        bot.send_message(message.chat.id, f'<pre>{get_fiat_data(currencies_tickers)}</pre>', parse_mode='html')
     elif get_message == "crypto":
-        bot.send_message(message.chat.id, f'<pre>{get_crypto_data(crypto)}</pre>', parse_mode='html')
+        bot.send_message(message.chat.id, f'<pre>{get_crypto_data(crypto_tickers)}</pre>', parse_mode='html')
     elif get_message == "stocks":
-        bot.send_message(message.chat.id, f'<pre>{get_stock_data(stocks)}</pre>', parse_mode='html')
+        bot.send_message(message.chat.id, f'<pre>{get_stock_data(stocks_tickers)}</pre>', parse_mode='html')
 
 
 bot.polling(none_stop=True)
