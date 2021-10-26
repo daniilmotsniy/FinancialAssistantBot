@@ -1,3 +1,4 @@
+from collections import defaultdict
 from datetime import date
 
 from flask import jsonify, abort
@@ -34,10 +35,15 @@ class UsersApiParam(Resource):
         user = User.query.filter_by(user_id=user_id).first()
         if not user:
             abort(406, 'This record is absent in database')
+        user_assets = Asset.query.with_entities(Asset.type_id,
+                                                Asset.ticker).filter_by(user_id=user_id).all()
 
-        user_assets = Asset.query.filter_by(user_id=user_id).all()
         user_dict = user.to_dict()
-        user_dict['user_assets'] = [asset.to_dict() for asset in user_assets]
+        assets_with_type = defaultdict(lambda: [])
+        for asset in user_assets:
+            assets_with_type[asset.type_id].append(asset.ticker)
+
+        user_dict['user_assets'] = assets_with_type
         return jsonify(user_dict)
 
     @staticmethod
@@ -113,8 +119,10 @@ class UsersApi(Resource):
         for user in users:
             user_assets = Asset.query.filter_by(user_id=user.user_id).all()
             user_dict = user.to_dict()
-            assets_dict = [asset.to_dict() for asset in user_assets]
-            user_dict['user_assets'] = assets_dict
+            assets_with_type = defaultdict(lambda: [])
+            for asset in user_assets:
+                assets_with_type[asset.type_id].append(asset.ticker)
+            user_dict['user_assets'] = assets_with_type
             user_with_assets.append(user_dict)
         return user_with_assets, 200
 
