@@ -1,8 +1,7 @@
-from os import environ as env
 import requests
 from prettytable import PrettyTable
 
-from config import FINFUB_TOKEN
+from telegram_bot.config import FINFUB_TOKEN
 
 
 def get_stock_data(ticker_):

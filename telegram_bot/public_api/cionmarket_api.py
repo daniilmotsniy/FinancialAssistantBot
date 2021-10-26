@@ -2,7 +2,8 @@ from requests import Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 from prettytable import PrettyTable
-from config import COIN_MARKET_TOKEN
+
+from telegram_bot.config import COIN_MARKET_TOKEN
 
 crypto_url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
 
