@@ -4,17 +4,8 @@ import pandas as pd
 import sys
 sys.path.append("..")
 
-from data_processing.gateways import postgres
-from data_processing.entity import asset
-
 
 class AnalyticsBase(object):
-    def __init__(self, csv_path: str):
-        """
-        csv_path is path to database backup in csv
-        """
-        self._csv_path = csv_path
-
     def show_plot(self, dataframe: pd.DataFrame):
         """
         allows to show plot of dataframe
@@ -22,14 +13,3 @@ class AnalyticsBase(object):
         dataframe.plot()
         plt.show()
 
-    def _cleanup_dataframe_from_csv(self):
-        df = pd.read_csv(self._csv_path, dtype=object, delimiter='|', index_col='id')
-        for index, row in df.iterrows():
-            row['user_stocks'] = str(row['user_stocks']).split(',')
-            row['user_cryptos'] = str(row['user_cryptos']).split(',')
-            row['user_currencies'] = str(row['user_currencies']).split(',')
-            row['user_resources'] = str(row['user_resources']).split(',')
-        return df
-
-    def _read_from_db(self):
-        return postgres.Postgres().session().query(asset.Asset).all()
