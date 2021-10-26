@@ -9,6 +9,6 @@ pip install -r requirements.txt
 
 ### Run bot
 ```
-python main.py
+python run.py
 ```
 
