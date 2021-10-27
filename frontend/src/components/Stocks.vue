@@ -11,7 +11,7 @@
             <tr v-for="i in user_stocks" :key="i">
                 <td>{{ stockDict[i] }}</td>
                 <td>{{ i }}</td>
-                <td><a id="delete" v-on:click="$emit('remove-stock', i)">Delete</a></td>
+                <td><a id="delete" v-on:click="$emit('remove-stock', i, 'user_stocks')">Delete</a></td>
             </tr>
         </table>
         <br>
@@ -46,7 +46,9 @@
         })
       },
       onSubmit(result){
-        this.$emit('add-stock', Object.keys(this.stockDict).find(key => this.stockDict[key] === result))
+        this.$emit('add-stock',
+            Object.keys(this.stockDict).find(key => this.stockDict[key] === result),
+            'user_stocks')
       }
     },
     data(){
