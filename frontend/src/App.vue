@@ -7,19 +7,19 @@
     <br>
     <div v-if="this.user_name">
       <Cryptos
-        v-bind:user_cryptos="user_cryptos"
-        v-on:add-crypto="addCrypto"
-        v-on:remove-crypto="deleteCrypto"
-      /> 
+        v-bind:user_cryptos="this.user_assets['user_cryptos']"
+        v-on:add-crypto="addAsset"
+        v-on:remove-crypto="deleteAsset"
+      />
       <Stocks
-        v-bind:user_stocks="user_stocks"
-        v-on:add-stock="addStock"
-        v-on:remove-stock="deleteStock"
+        v-bind:user_stocks="this.user_assets['user_stocks']"
+        v-on:add-stock="addAsset"
+        v-on:remove-stock="deleteAsset"
       />
       <Currencies
-        v-bind:user_currencies="user_currencies"
-        v-on:add-currencies="addCurrencie"
-        v-on:remove-currencies="deleteCurrencie"
+        v-bind:user_currencies="this.user_assets['user_currencies']"
+        v-on:add-currencies="addAsset"
+        v-on:remove-currencies="deleteAsset"
       />
     </div>
     <div v-else-if="this.user_name===null">
@@ -36,8 +36,8 @@ import Stocks from './components/Stocks.vue'
 import Currencies from './components/Currencies.vue'
 import Cryptos from './components/Cryptos.vue'
 
-// this is link to API url (now local)
-let API_URL = 'http://127.0.0.1:5000'
+let CONFIG = require('./config.json')
+let API_URL = CONFIG['API_URL']
 
 export default {
   name: 'App',
@@ -51,60 +51,34 @@ export default {
       this.user_id = token
       this.getData(token)
     },
-    addStock(i){
-      if (!this.user_stocks.includes(i)){
-        this.user_stocks.push(i)
-        this.updateData(this.user_id)
+    addAsset(asset, typeId){
+      for (let type_id in this.user_assets){
+        if (!this.user_assets[type_id].includes(asset) && (type_id === typeId)){
+          this.user_assets[type_id].push(asset)
+          this.updateData(this.user_id)
+        }
       }
     },
-    deleteStock(i){
-      this.user_stocks = this.user_stocks.filter(item => item !== i)
+    deleteAsset(asset, typeId){
+      this.user_assets[typeId] = this.user_assets[typeId].filter(item => item !== asset)
       this.updateData(this.user_id)
     },
-    addCurrencie(i){
-      if (!this.user_currencies.includes(i)){
-        this.user_currencies.push(i)
-        this.updateData(this.user_id)
-      }
-    },
-    deleteCurrencie(i){
-      this.user_currencies = this.user_currencies.filter(item => item !== i)
-      this.updateData(this.user_id)
-    },
-    addCrypto(i){
-      if (!this.user_cryptos.includes(i)){
-        this.user_cryptos.push(i)
-        this.updateData(this.user_id)
-      }
-    },
-    deleteCrypto(i){
-      this.user_cryptos = this.user_cryptos.filter(item => item !== i)
-      this.updateData(this.user_id)
-    },
-    getData(token){
-      fetch(API_URL + `/api/v1/users/` + token)
+    getData(user_id){
+      fetch(API_URL + `/api/v1/users/` + user_id)
       .then(response => response.json())
       .then(json => {
         this.user_name = json['user_name']
-        this.user_stocks = json['user_assets']['user_stocks']
-        this.user_currencies = json['user_assets']['user_currencies']
-        this.user_cryptos = json['user_assets']['user_cryptos']
-        this.user_resources = json['user_assets']['user_resources']
+        this.user_assets = json['user_assets']
       })
     },
-    updateData(i){
-      fetch(API_URL + `/api/v1/users/` + i, {
+    updateData(user_id){
+      fetch(API_URL + `/api/v1/users/` + user_id, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          "user_assets": {
-            "user_stocks": this.user_stocks,
-            "user_currencies": this.user_currencies,
-            "user_cryptos": this.user_cryptos,
-            "user_resources": this.user_resources,
-          }
+          "user_assets": this.user_assets,
         })
       })
     }
@@ -113,10 +87,7 @@ export default {
       return {
           user_id: null,
           user_name: null,
-          user_stocks: [],
-          user_currencies: [],
-          user_cryptos: [],
-          user_resources: [],
+          user_assets: {},
       }
   },
   mounted(){
@@ -124,10 +95,7 @@ export default {
         .then(response => response.json())
         .then(json => {
             this.user_name = json['user_name']
-            this.user_stocks = json['user_assets']['user_stocks']
-            this.user_currencies = json['user_assets']['user_currencies']
-            this.user_cryptos = json['user_assets']['user_cryptos']
-            this.user_resources = json['user_assets']['user_resources']
+            this.user_assets = json['user_assets']
         })
   }
 }

@@ -11,7 +11,7 @@
             <tr v-for="i in user_cryptos" :key="i">
                 <td>{{ cryptoDict[i] }}</td>
                 <td>{{ i }}</td>
-                <td><a id="delete" v-on:click="$emit('remove-crypto', i)">Delete</a></td>
+                <td><a id="delete" v-on:click="$emit('remove-crypto', i, 'user_cryptos')">Delete</a></td>
             </tr>
         </table>
         <br>
@@ -47,7 +47,10 @@
           })
         },
         onSubmit(result){
-          this.$emit('add-crypto', Object.keys(this.cryptoDict).find(key => this.cryptoDict[key] === result))
+          this.$emit('add-crypto',
+              Object.keys(this.cryptoDict).find(key => this.cryptoDict[key] === result),
+              'user_cryptos'
+          )
         }
       },
       data(){

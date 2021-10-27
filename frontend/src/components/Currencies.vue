@@ -11,7 +11,7 @@
             <tr v-for="i in user_currencies" :key="i">
               <td>{{ currencieDict[i] }}</td>
                 <td>{{ i }}</td>
-                <td><a id="delete" v-on:click="$emit('remove-currencies', i)">Delete</a></td>
+                <td><a id="delete" v-on:click="$emit('remove-currencies', i, 'user_currencies')">Delete</a></td>
             </tr>
         </table>
         <br>
@@ -47,7 +47,9 @@ export default ({
     },
     onSubmit(result){
       //TODO clear value
-      this.$emit('add-currencies', Object.keys(this.currencieDict).find(key => this.currencieDict[key] === result))
+      this.$emit('add-currencies',
+          Object.keys(this.currencieDict).find(key => this.currencieDict[key] === result),
+          'user_currencies')
     }
   },
   data(){
