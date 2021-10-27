@@ -18,6 +18,7 @@ logger = logging.getLogger()
 
 @bot.message_handler(commands=["start"])
 def start(message):
+    # TODO refactor after creating API on BE
     asset_type_labels = [asset_type.label for asset_type
                          in AssetTypes.query.with_entities(AssetTypes.label).all()]
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True,
@@ -61,6 +62,7 @@ def get_token(message):
 
 @bot.message_handler(content_types=["text"])
 def mess(message):
+    # TODO refactor after creating API on BE
     asset_types = {asset_type.label: asset_type.type_id for asset_type
                    in AssetTypes.query.all()}
     token = sha256(str(message.chat.id).encode('utf-8')).hexdigest()
