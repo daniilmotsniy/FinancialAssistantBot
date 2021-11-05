@@ -34,7 +34,7 @@ def start(message):
 @bot.message_handler(commands=["get_token"])
 def get_token(message):
     token = sha256(str(message.chat.id).encode('utf-8')).hexdigest()
-    # TODO move to backend
+    # TODO move to backend?
     data = json.dumps({
         'user_id': token,
         'user_name': message.from_user.first_name,
