@@ -12,7 +12,7 @@ api.add_resource(UsersApiParam, '/api/v1/users/<user_id>')
 api.add_resource(AdminsApi, '/api/v1/admins')
 api.add_resource(AdminsApiParam, '/api/v1/admins/<admin_id>')
 api.add_resource(AssetsApi, '/api/v1/assets')
-api.add_resource(AssetsApiParam, '/api/v1/assets/<asset_id>')
+api.add_resource(AssetsApiParam, '/api/v1/assets/<type_id>/<ticker>')
 api.add_resource(AssetTypesApi, '/api/v1/asset_types')
 
 

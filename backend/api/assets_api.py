@@ -23,11 +23,11 @@ class AssetsApiParam(Resource):
     """
 
     @staticmethod
-    def get(asset_id):
+    def get(type_id, ticker):
         """
         get the asset record
         """
-        asset = Asset.query.get(asset_id)
+        asset = Asset.query.filter_by(type_id=type_id, ticker=ticker).first()
         if not asset:
             abort(406, 'This record is absent in database')
 
@@ -37,16 +37,16 @@ class AssetsApiParam(Resource):
         return jsonify(asset_data)
 
     @staticmethod
-    def delete(asset_id):
+    def delete(type_id, ticker):
         """
         delete asset record
         :return: id of deleted asset
         """
         session = db.session
-        asset = session.query(Asset).get(asset_id)
+        asset = session.query(Asset).filter_by(type_id=type_id, ticker=ticker).first()
         if asset is None:
             abort(406, 'This record is absent in database')
-        id_ = asset_id
+        id_ = asset.asset_id
         session.delete(asset)
         session.commit()
         session.close()
