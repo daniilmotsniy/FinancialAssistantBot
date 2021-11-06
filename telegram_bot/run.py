@@ -17,7 +17,7 @@ logger = logging.getLogger()
 
 @bot.message_handler(commands=["start"])
 def start(message):
-    asset_type_labels = [asset_type.label for asset_type
+    asset_type_labels = [asset_type['label'] for asset_type
                          in requests.get(API_URL + '/api/v1/asset_types').json()]
     markup = types.ReplyKeyboardMarkup(resize_keyboard=True,
                                        row_width=len(asset_type_labels))
@@ -34,7 +34,6 @@ def start(message):
 @bot.message_handler(commands=["get_token"])
 def get_token(message):
     token = sha256(str(message.chat.id).encode('utf-8')).hexdigest()
-    # TODO move to backend?
     data = json.dumps({
         'user_id': token,
         'user_name': message.from_user.first_name,
