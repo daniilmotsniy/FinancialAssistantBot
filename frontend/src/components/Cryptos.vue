@@ -8,10 +8,10 @@
                 <th>Ticker</th>
                 <th>Delete</th>
             </tr>
-            <tr v-for="i in user_cryptos" :key="i">
-                <td>{{ cryptoDict[i] }}</td>
-                <td>{{ i }}</td>
-                <td><a id="delete" v-on:click="$emit('remove-crypto', i, 'user_cryptos')">Delete</a></td>
+            <tr v-for="crypto in user_cryptos" :key="crypto">
+                <td>{{ cryptoDict[crypto] }}</td>
+                <td>{{ crypto }}</td>
+                <td><a id="delete" v-on:click="$emit('remove-crypto', crypto, 'user_cryptos')">Delete</a></td>
             </tr>
         </table>
         <br>

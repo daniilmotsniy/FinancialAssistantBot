@@ -2,7 +2,7 @@
   <div id="app">
     <img alt="Financial assistant logo" src="./assets/logo.png" height="200">
     <br>
-    <h2>Welocme to bot admin {{this.user_name}}!</h2>
+    <h2>Welcome to bot admin {{this.user_name}}!</h2>
     <input v-model="token" v-on:change="tokenEvent(token)" placeholder="put your token here, please">
     <br>
     <div v-if="this.user_name">
@@ -52,16 +52,32 @@ export default {
       this.getData(token)
     },
     addAsset(asset, typeId){
-      for (let type_id in this.user_assets){
-        if (!this.user_assets[type_id].includes(asset) && (type_id === typeId)){
-          this.user_assets[type_id].push(asset)
-          this.updateData(this.user_id)
-        }
+      if (!asset){
+        return
+      }
+      fetch(API_URL + `/api/v1/assets`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "user_id": this.user_id,
+          "ticker": asset,
+          "type_id": typeId
+        })
+      })
+      if (!this.user_assets[typeId].includes(asset)){
+        this.user_assets[typeId].push(asset)
       }
     },
     deleteAsset(asset, typeId){
+      fetch(API_URL + `/api/v1/assets/` + typeId + '/' + asset, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
       this.user_assets[typeId] = this.user_assets[typeId].filter(item => item !== asset)
-      this.updateData(this.user_id)
     },
     getData(user_id){
       fetch(API_URL + `/api/v1/users/` + user_id)
@@ -69,17 +85,6 @@ export default {
       .then(json => {
         this.user_name = json['user_name']
         this.user_assets = json['user_assets']
-      })
-    },
-    updateData(user_id){
-      fetch(API_URL + `/api/v1/users/` + user_id, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "user_assets": this.user_assets,
-        })
       })
     }
   },

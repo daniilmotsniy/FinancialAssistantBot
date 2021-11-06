@@ -4,14 +4,14 @@
         <br>
         <table id="data">
             <tr>
-                <th>Currencie</th>
+                <th>Currencies</th>
                 <th>Ticker</th>
                 <th>Delete</th>
             </tr>
-            <tr v-for="i in user_currencies" :key="i">
-              <td>{{ currencieDict[i] }}</td>
-                <td>{{ i }}</td>
-                <td><a id="delete" v-on:click="$emit('remove-currencies', i, 'user_currencies')">Delete</a></td>
+            <tr v-for="currency in user_currencies" :key="currency">
+              <td>{{ currencieDict[currency] }}</td>
+                <td>{{ currency }}</td>
+                <td><a id="delete" v-on:click="$emit('remove-currencies', currency, 'user_currencies')">Delete</a></td>
             </tr>
         </table>
         <br>
