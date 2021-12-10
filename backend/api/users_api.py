@@ -148,7 +148,7 @@ class UsersApi(Resource):
                 for ticker in asset_tickers:
                     new_assets = Asset(request_data['user_id'],
                                        asset_type_id,
-                                       ticker)
+                                       ticker, 2, )
                     session.add(new_assets)
             session.commit()
             return {"New user was added with id": new_user.user_id}, 201

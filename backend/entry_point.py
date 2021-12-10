@@ -5,6 +5,7 @@ from backend.app import app
 from backend.api.users_api import UsersApi, UsersApiParam
 from backend.api.admins_api import AdminsApi, AdminsApiParam
 from backend.api.assets_api import AssetsApi, AssetsApiParam, AssetTypesApi
+from backend.api.portfolio_api import PortfoliosApi, PortfoliosApiParam
 
 api = Api(app)
 api.add_resource(UsersApi, '/api/v1/users')
@@ -14,6 +15,8 @@ api.add_resource(AdminsApiParam, '/api/v1/admins/<admin_id>')
 api.add_resource(AssetsApi, '/api/v1/assets')
 api.add_resource(AssetsApiParam, '/api/v1/assets/<type_id>/<ticker>')
 api.add_resource(AssetTypesApi, '/api/v1/asset_types')
+api.add_resource(PortfoliosApi, '/api/v1/portfolio')
+api.add_resource(PortfoliosApiParam, '/api/v1/portfolio/<portfolio_id>')
 
 
 db.create_all()

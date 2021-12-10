@@ -3,6 +3,7 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
 from backend.models.assets import Asset, AssetTypes
+
 from backend.db import db
 from marshmallow import Schema, fields, ValidationError
 from flask import request
@@ -12,6 +13,8 @@ class AssetsSchema(Schema):
     user_id = fields.String()
     ticker = fields.String()
     type_id = fields.String()
+    count = fields.Integer()
+    portfolio_id = fields.Integer()
 
 
 asset_schema = AssetsSchema()
@@ -78,13 +81,13 @@ class AssetsApi(Resource):
                 request_data = asset_schema.load(json_data)
             except ValidationError as error:
                 return {'Message': error.messages}, 406
-
             old_asset = Asset.query.with_entities(Asset.asset_id).filter_by(user_id=request_data['user_id'],
                                                                             ticker=request_data['ticker'],
                                                                             type_id=request_data['type_id']).first()
             if not old_asset:
                 new_asset = Asset(request_data['user_id'], request_data['type_id'],
-                                  request_data['ticker'])
+                                  request_data['ticker'], request_data['count'],
+                                  request_data['portfolio_id'])
                 session.add(new_asset)
                 session.commit()
                 return {"New asset was added with id: ": new_asset.asset_id}, 201

@@ -3,6 +3,7 @@ from flask_migrate import Migrate, MigrateCommand
 from models.user import User
 from models.assets import Asset
 from models.assets import AssetTypes
+from models.portfolio import Portfolio
 
 from db import db
 from app import app
