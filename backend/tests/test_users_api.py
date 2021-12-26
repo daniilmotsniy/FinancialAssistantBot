@@ -1,6 +1,6 @@
 import json
 
-from test_base_api import TestAPIBase
+from backend.tests.test_base_api import TestAPIBase
 
 
 class TestUserApi(TestAPIBase):
@@ -86,8 +86,7 @@ class TestUserApi(TestAPIBase):
                                   data=data_to_update)
         new_user = self.client.get('/api/v1/users/ef797c8118f02dfb649607dd5'
                                    'd3f8c7623048c9c063d532cc95c5ed7a898a64f')
-
-        self.assertEqual("MCFE", json.loads(new_user.data)['user_assets'][7]['ticker'])
+        self.assertEqual("MCFE", json.loads(new_user.data)['user_assets']['user_stocks'][1])
         self.assertEqual(204, request.status_code)
 
     def test_delete_user(self):

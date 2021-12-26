@@ -5,6 +5,7 @@ from flask import jsonify, abort
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
+from backend.api.token_verify import token_required
 from backend.models.assets import Asset
 from backend.models.user import User
 
@@ -28,16 +29,20 @@ class UsersApiParam(Resource):
     """
 
     @staticmethod
+    @token_required
     def get(user_id):
         """
         get the user record
         """
         user = User.query.filter_by(user_id=user_id).first()
         if not user:
-            abort(406, 'This record is absent in database')
+            session = db.session
+            new_user = User(user_id, '', date.today())
+            session.add(new_user)
+            session.commit()
+            user = new_user
         user_assets = Asset.query.with_entities(Asset.type_id,
                                                 Asset.ticker).filter_by(user_id=user_id).all()
-
         user_dict = user.to_dict()
         assets_with_type = defaultdict(lambda: [])
         for asset in user_assets:
@@ -47,6 +52,7 @@ class UsersApiParam(Resource):
         return jsonify(user_dict)
 
     @staticmethod
+    @token_required
     def put(user_id):
         """
         update the record of user assets
@@ -87,6 +93,7 @@ class UsersApiParam(Resource):
             session.close()
 
     @staticmethod
+    @token_required
     def delete(user_id):
         """
         delete user record
@@ -109,6 +116,7 @@ class UsersApi(Resource):
     """
 
     @staticmethod
+    @token_required
     def get():
         """
         get all user records

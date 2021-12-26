@@ -4,6 +4,7 @@ from flask import jsonify, abort
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
+from backend.api.token_verify import token_required
 from backend.models.admin import Admin
 from backend.db import db
 from marshmallow import Schema, fields, ValidationError
@@ -24,6 +25,7 @@ class AdminsApiParam(Resource):
     """
 
     @staticmethod
+    @token_required
     def get(admin_id):
         """
         get the admin record
@@ -36,6 +38,7 @@ class AdminsApiParam(Resource):
         return jsonify(admin.to_dict())
 
     @staticmethod
+    @token_required
     def put(admin_id):
         """
         update the record of admin assets
@@ -65,6 +68,7 @@ class AdminsApiParam(Resource):
             return {'Message': f'No such admin with id={admin_id}'}, 404
 
     @staticmethod
+    @token_required
     def delete(admin_id):
         """
         delete admin record
@@ -86,6 +90,7 @@ class AdminsApi(Resource):
     API endpoints without parameters for campaign entity
     """
     @staticmethod
+    @token_required
     def get():
         """
         get all admin records
@@ -93,6 +98,7 @@ class AdminsApi(Resource):
         return [admin.to_dict() for admin in Admin.query.all()], 200
 
     @staticmethod
+    @token_required
     def post():
         """
         add new admin
