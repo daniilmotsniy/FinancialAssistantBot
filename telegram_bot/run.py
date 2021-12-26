@@ -59,7 +59,7 @@ def get_token(message):
 
 
 @bot.message_handler(content_types=["text"])
-def mess(message):
+def get_assets_info(message):
     asset_types = {asset_type['label']: asset_type['type_id'] for asset_type
                    in requests.get(API_URL + '/api/v1/asset_types').json()}
     token = sha256(str(message.chat.id).encode('utf-8')).hexdigest()

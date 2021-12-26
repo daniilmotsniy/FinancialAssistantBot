@@ -53,9 +53,6 @@ export default {
     Cryptos
   },
   methods: {
-    getIdToken(){
-      return this.$auth.idToken;
-    },
     addAsset(asset, typeId){
       if (!asset){
         return
