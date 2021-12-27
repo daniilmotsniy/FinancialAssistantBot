@@ -34,23 +34,6 @@ def start(message):
 @bot.message_handler(commands=["get_token"])
 def get_token(message):
     token = sha256(str(message.chat.id).encode('utf-8')).hexdigest()
-    data = json.dumps({
-        'user_id': token,
-        'user_name': message.from_user.first_name,
-        'user_assets': {
-            'user_stocks': ["AAPL", "MSFT"],
-            'user_cryptos': ["BTC", "ETH"],
-            'user_currencies': ["USD", "EUR"],
-            'user_resources': [],
-        }
-    })
-    if requests.get(API_URL + '/api/v1/users/' + token).status_code == 406:
-        try:
-            requests.post(API_URL + '/api/v1/users',
-                          headers={"Content-Type": "application/json"},
-                          data=data)
-        except Exception as e:
-            logger.log(logging.ERROR, f"Error: {e}")
     text = f"Your token is bellow, please don't give it anyone if you want" \
            f" to control your assets by your own." \
            f"\n \n {token}"
@@ -64,9 +47,9 @@ def get_assets_info(message):
                    in requests.get(API_URL + '/api/v1/asset_types').json()}
     token = sha256(str(message.chat.id).encode('utf-8')).hexdigest()
 
-    if requests.get(API_URL + '/api/v1/users/' + token).status_code == 406:
+    if requests.get(API_URL + '/api/v1/users/token/' + token).status_code == 406:
         logger.log(logging.WARNING, "User not exists!")
-    user_assets = requests.get(API_URL + '/api/v1/users/'
+    user_assets = requests.get(API_URL + '/api/v1/users/token/'
                                + token).json()['user_assets']
     asset_id = asset_types[message.text]
     bot.send_message(message.chat.id,

@@ -8,16 +8,19 @@ class User(db.Model):
 
     user_id = Column(String, primary_key=True, nullable=False)
     user_name = Column(String, nullable=False)
+    token = Column(String, unique=False)
     registration_date = Column(Date)
 
-    def __init__(self, user_id, user_name, registration_date):
+    def __init__(self, user_id, user_name, registration_date, token):
         self.user_id = user_id
         self.user_name = user_name
+        self.token = token
         self.registration_date = registration_date
 
     def to_dict(self):
         return {
             'user_id': self.user_id,
             'user_name': self.user_name,
-            'registration_date': str(self.registration_date)
+            'registration_date': str(self.registration_date),
+            'token': self.token
         }

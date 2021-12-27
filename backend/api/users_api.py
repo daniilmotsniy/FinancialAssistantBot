@@ -20,10 +20,15 @@ class UsersSchema(Schema):
     user_assets = fields.Dict()
 
 
+class UserDataSchema(Schema):
+    token = fields.String()
+
+
 user_schema = UsersSchema()
+user_data_schema = UserDataSchema()
 
 
-class UsersApiParam(Resource):
+class UsersAssetsApiParam(Resource):
     """
     API endpoints which use parameters for user entity
     """
@@ -37,7 +42,7 @@ class UsersApiParam(Resource):
         user = User.query.filter_by(user_id=user_id).first()
         if not user:
             session = db.session
-            new_user = User(user_id, '', date.today())
+            new_user = User(user_id, None, date.today(), None)
             session.add(new_user)
             session.commit()
             user = new_user
@@ -92,25 +97,8 @@ class UsersApiParam(Resource):
         finally:
             session.close()
 
-    @staticmethod
-    @token_required
-    def delete(user_id):
-        """
-        delete user record
-        :return: id of deleted user
-        """
-        session = db.session
-        user = session.query(User).get(user_id)
-        if user is None:
-            abort(406, 'This record is absent in database')
-        id_ = user_id
-        session.delete(user)
-        session.commit()
-        session.close()
-        return {"User was deleted with id": id_}, 200
 
-
-class UsersApi(Resource):
+class UserAssetsApi(Resource):
     """
     API endpoints without parameters for campaign entity
     """
@@ -149,7 +137,7 @@ class UsersApi(Resource):
         try:
             new_user = User(request_data['user_id'],
                             request_data['user_name'],
-                            date.today())
+                            date.today(), None)
             session.add(new_user)
             session.commit()
             for asset_type_id, asset_tickers in request_data['user_assets'].items():
@@ -168,3 +156,79 @@ class UsersApi(Resource):
             return {'Message': e}, 500
         finally:
             session.close()
+
+
+class UsersDataApiParam(Resource):
+    """
+    API endpoints which use parameters for user entity
+    """
+    @staticmethod
+    @token_required
+    def get(user_id):
+        """
+        get the user record
+        """
+        user = User.query.filter_by(user_id=user_id).first()
+        return jsonify(user.to_dict())
+
+    @staticmethod
+    @token_required
+    def put(user_id):
+        """
+        update the record of user assets
+        :return: response message
+        """
+        session = db.session
+        json_data = request.json
+
+        try:
+            request_data = user_data_schema.load(json_data)
+        except ValidationError as error:
+            return {'Message': error.messages}, 406
+
+        try:
+            user = session.query(User).get(user_id)
+            user.token = request_data['token']
+            session.commit()
+            return {"User was updated with id": user_id}, 204
+        except Exception:
+            session.rollback()
+            return {'Message': 'Internal error occurred'}, 500
+        finally:
+            session.close()
+
+    @staticmethod
+    @token_required
+    def delete(user_id):
+        """
+        delete user record
+        :return: id of deleted user
+        """
+        session = db.session
+        user = session.query(User).get(user_id)
+        if user is None:
+            abort(406, 'This record is absent in database')
+        id_ = user_id
+        session.delete(user)
+        session.commit()
+        session.close()
+        return {"User was deleted with id": id_}, 200
+
+
+class UsersAssetsTokenApiParam(Resource):
+    """
+    API endpoints which use parameters for user entity
+    """
+
+    @staticmethod
+    def get(token):
+        user = User.query.filter_by(token=token).first()
+        user_assets = Asset.query.with_entities(Asset.type_id,
+                                                Asset.ticker).filter_by(user_id=user.user_id).all()
+        user_dict = user.to_dict()
+        assets_with_type = defaultdict(lambda: [])
+        for asset in user_assets:
+            assets_with_type[asset.type_id].append(asset.ticker)
+
+        user_dict['user_assets'] = assets_with_type
+        return jsonify(user_dict)

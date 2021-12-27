@@ -53,6 +53,9 @@
                 <router-link to="/profile" class="dropdown-item dropdown-profile">
                   <font-awesome-icon class="mr-3" icon="user" />Profile
                 </router-link>
+                <router-link to="/settings" class="dropdown-item dropdown-profile">
+                  <font-awesome-icon  class="mr-3" icon="cog" />Settings
+                </router-link>
                 <a id="qsLogoutBtn" href="#" class="dropdown-item" @click.prevent="logout">
                   <font-awesome-icon class="mr-3" icon="power-off" />Log out
                 </a>
@@ -84,7 +87,10 @@
               <font-awesome-icon icon="user" class="mr-3" />
               <router-link to="/profile">Profile</router-link>
             </li>
-
+            <li>
+              <font-awesome-icon  class="mr-3" icon="cogs" />
+              <router-link to="/settings" class="dropdown-item dropdown-profile">Settings</router-link>
+            </li>
             <li>
               <font-awesome-icon icon="power-off" class="mr-3" />
               <a id="qsLogoutBtn" href="#" class @click.prevent="logout">Log out</a>
