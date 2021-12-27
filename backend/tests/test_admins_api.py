@@ -1,6 +1,6 @@
 import json
 
-from test_base_api import TestAPIBase
+from backend.tests.test_base_api import TestAPIBase
 
 
 class TestAdminApi(TestAPIBase):

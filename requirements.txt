@@ -49,3 +49,4 @@ graphene~=2.1.9
 fastapi~=0.68.0
 starlette~=0.14.2
 matplotlib~=3.4.2
+cryptography==36.0.1

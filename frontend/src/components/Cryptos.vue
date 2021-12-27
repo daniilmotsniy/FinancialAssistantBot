@@ -41,9 +41,7 @@
             return []
           }
           return Object.values(this.cryptoDict).filter(cryptoTicker => {
-            return cryptoTicker
-                .toLowerCase()
-                .startsWith(input.toLowerCase())
+            return cryptoTicker.toLowerCase().startsWith(input.toLowerCase())
           })
         },
         onSubmit(result){

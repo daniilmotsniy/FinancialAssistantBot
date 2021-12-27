@@ -2,6 +2,7 @@ from flask import jsonify, abort
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
+from backend.api.token_verify import token_required
 from backend.models.assets import Asset, AssetTypes
 from backend.db import db
 from marshmallow import Schema, fields, ValidationError
@@ -23,6 +24,7 @@ class AssetsApiParam(Resource):
     """
 
     @staticmethod
+    @token_required
     def get(type_id, ticker):
         """
         get the asset record
@@ -37,6 +39,7 @@ class AssetsApiParam(Resource):
         return jsonify(asset_data)
 
     @staticmethod
+    @token_required
     def delete(type_id, ticker):
         """
         delete asset record
@@ -59,6 +62,7 @@ class AssetsApi(Resource):
     """
 
     @staticmethod
+    @token_required
     def get():
         """
         get all asset records
@@ -66,6 +70,7 @@ class AssetsApi(Resource):
         return [asset.to_dict() for asset in Asset.query.all()], 200
 
     @staticmethod
+    @token_required
     def post():
         """
         add new asset
