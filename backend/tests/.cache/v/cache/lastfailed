@@ -1,6 +1,9 @@
 {
   "test_admins_api.py": true,
+  "test_admins_api.py::TestAdminApi::test_get_admins": true,
+  "test_admins_api.py::TestAdminApi::test_post_admin": true,
+  "test_admins_api.py::TestAdminApi::test_put_admin": true,
   "test_users_api.py": true,
-  "test_users_api.py::TestUserApi::test_get_user": true,
-  "test_users_api.py::TestUserApi::test_get_users": true
+  "test_users_api.py::TestUserApi::test_get_users": true,
+  "test_users_api.py::TestUserApi::test_put_user": true
 }

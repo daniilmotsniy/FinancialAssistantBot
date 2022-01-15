@@ -2,7 +2,7 @@ from flask import jsonify, abort
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
-from backend.api.token_verify import token_required
+from backend.auth.token_verify import token_required
 from backend.models.assets import Asset, AssetTypes
 from backend.db import db
 from marshmallow import Schema, fields, ValidationError
